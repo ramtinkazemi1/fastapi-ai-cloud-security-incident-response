@@ -18,3 +18,9 @@ class Settings(BaseSettings):
         env_prefix="CIR_",
         extra="ignore",
     )
+
+    database_url: str = (
+        "postgresql+asyncpg://"
+        "incident_app:local-development-only@"
+        "localhost:5434/incident_response"
+    )
