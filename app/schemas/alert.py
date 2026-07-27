@@ -1,5 +1,6 @@
 from datetime import datetime
 from enum import StrEnum
+from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -39,3 +40,13 @@ class AlertCreate(BaseModel):
 
         # Field validators must return the value Pydantic should store.
         return value
+
+
+class AlertRead(AlertCreate):
+    """A persisted alert returned by the API."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    created_at: datetime
+    updated_at: datetime
