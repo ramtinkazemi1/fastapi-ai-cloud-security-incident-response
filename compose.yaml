@@ -1,12 +1,3 @@
-# pg_isready asks PostgreSQL whether it accepts connections.
-# -U incident_app checks using our database user.
-# -d incident_response targets our database.
-# interval runs the check every five seconds.
-# timeout fails an individual check after five seconds.
-# retries marks the service unhealthy after five failures.
-# start_period gives PostgreSQL time to initialize before failures count.
-
-
 services:
   postgres:
     image: postgres:17-alpine
@@ -26,6 +17,38 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
+
+  api:
+    build: .
+    environment:
+      CIR_DATABASE_URL: >-
+        postgresql+asyncpg://incident_app:local-development-only@postgres:5432/incident_response
+      CIR_API_KEY: ${CIR_API_KEY:-local-development-api-key}
+      CIR_JWT_SECRET: ${CIR_JWT_SECRET:-local-development-jwt-secret-change-me}
+      CIR_OPENAI_API_KEY: ${CIR_OPENAI_API_KEY:-}
+      CIR_OPENAI_MODEL: ${CIR_OPENAI_MODEL:-gpt-4.1-mini}
+    command:
+      - sh
+      - -c
+      - uv run alembic upgrade head &&
+        uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen('http://localhost:8000/ready')
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 volumes:
   postgres_data:

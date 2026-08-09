@@ -1,6 +1,7 @@
 """Pydantic contracts for AWS GuardDuty findings."""
 
 from datetime import datetime
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -24,3 +25,4 @@ class GuardDutyFinding(BaseModel):
     )
     region: str = Field(min_length=3, max_length=32)
     updated_at: datetime = Field(alias="updatedAt")
+    resource: dict[str, Any] = Field(default_factory=dict)

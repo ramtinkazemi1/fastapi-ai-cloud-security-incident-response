@@ -1,0 +1,16 @@
+{
+  "id": "wazuh-demo-001",
+  "timestamp": "2026-08-08T19:00:00Z",
+  "rule": {
+    "id": "5710",
+    "level": 12,
+    "description": "Multiple authentication failures"
+  },
+  "agent": {
+    "id": "001",
+    "name": "web-server-1"
+  },
+  "data": {
+    "srcip": "203.0.113.10"
+  }
+}

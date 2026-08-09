@@ -1,0 +1,15 @@
+{
+  "id": "guardduty-demo-001",
+  "type": "UnauthorizedAccess:EC2/SSHBruteForce",
+  "title": "EC2 instance received SSH brute-force traffic",
+  "description": "A remote host made repeated SSH connection attempts.",
+  "severity": 7.2,
+  "accountId": "123456789012",
+  "region": "us-west-2",
+  "updatedAt": "2026-08-08T19:00:00Z",
+  "resource": {
+    "instanceDetails": {
+      "instanceId": "i-0123456789abcdef0"
+    }
+  }
+}
